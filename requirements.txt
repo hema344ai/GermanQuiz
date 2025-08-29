@@ -13,3 +13,15 @@ streamlit
 pandas
 openpyxl
 google-generativeai
+streamlit
+google-generativeai
+pandas
+openpyxl
+sounddevice
+scipy
+numpy
+wavio
+pyttsx3
+whisper
+audio_similarity
+openai-whisper
