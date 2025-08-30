@@ -261,9 +261,11 @@ if st.session_state.user_role == "admin":
 
     if admin_page == "Change Quiz Questions":
         st.header("Upload/Change Quiz Questions")
-        uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
+        uploaded_file = st.file_uploader("Upload Question Bank")
         if uploaded_file:
-            result_df = pd.read_excel(uploaded_file)
+            result_df = pd.read_csv(uploaded_file,encoding='utf-8')
+            st.dataframe(result_df)
+            result_df.to_csv("questions.csv", index=False)
             result_df.columns = result_df.columns.str.strip()
             required_cols = {"Question", "Option A", "Option B", "Option C", "Option D", "Answer"}
             if required_cols.issubset(result_df.columns):
@@ -337,14 +339,14 @@ if st.session_state.user_role == "student":
             if st.session_state.roll_no and st.session_state.email:
                 # Add Refresh Quiz button
                 if st.button("🔄 Refresh Quiz"):
-                    df = pd.read_excel(QUESTION_FILE)
+                    df = pd.read_csv("questions.csv")
                     st.session_state.quiz_questions = df.sample(TOTAL_QUESTIONS).reset_index(drop=True)
                     st.session_state.quiz_page = 0
                     st.success("A new set of questions has been generated!")
 
                 # Generate questions if not already present
                 if "quiz_questions" not in st.session_state:
-                    df = pd.read_excel(QUESTION_FILE)
+                    df = pd.read_csv("questions.csv")
                     st.session_state.quiz_questions = df.sample(TOTAL_QUESTIONS).reset_index(drop=True)
                 quiz_questions = st.session_state.quiz_questions
 
